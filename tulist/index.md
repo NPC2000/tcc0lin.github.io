@@ -3,5 +3,8 @@
 
 - dobby
 - jnitrace
-- lsposed框架
+- lsposed
+    - lsplant
+    - lspatch
 - frida
+- sandhook

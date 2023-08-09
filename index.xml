@@ -13,6 +13,13 @@
     </author><guid>https://tcc0lin.github.io/maps%E7%89%B9%E5%BE%81%E6%A3%80%E6%B5%8B%E5%AF%B9%E6%8A%97/</guid>
     <description><![CDATA[一、前言maps文件在Android中一般指/proc/pid/maps，记录着每个进程的内存映射信息，也就是每个进程都会有一个对应的文件。]]></description>
 </item><item>
+    <title>Super分区定制</title>
+    <link>https://tcc0lin.github.io/super%E5%88%86%E5%8C%BA%E5%AE%9A%E5%88%B6/</link>
+    <pubDate>Mon, 31 Jul 2023 20:05:53 &#43;0800</pubDate><author>
+        <name>tcc0lin</name>
+    </author><guid>https://tcc0lin.github.io/super%E5%88%86%E5%8C%BA%E5%AE%9A%E5%88%B6/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
     <title>Riru原理理解</title>
     <link>https://tcc0lin.github.io/riru%E5%8E%9F%E7%90%86%E7%90%86%E8%A7%A3/</link>
     <pubDate>Tue, 25 Jul 2023 11:34:11 &#43;0800</pubDate><author>
@@ -68,12 +75,5 @@
         <name>tcc0lin</name>
     </author><guid>https://tcc0lin.github.io/magisk%E6%A3%80%E6%B5%8B%E6%96%B9%E5%BC%8F/</guid>
     <description><![CDATA[一、市面现存的检测方式 1 Magisk Detector来源于Magisk Detector（现已停止维护），我们可以从官方的细节文档看出它之前的设计思路 ，]]></description>
-</item><item>
-    <title>重读Magisk内部实现细节2</title>
-    <link>https://tcc0lin.github.io/%E9%87%8D%E8%AF%BBmagisk%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%822/</link>
-    <pubDate>Sun, 11 Jun 2023 11:36:47 &#43;0800</pubDate><author>
-        <name>tcc0lin</name>
-    </author><guid>https://tcc0lin.github.io/%E9%87%8D%E8%AF%BBmagisk%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%822/</guid>
-    <description><![CDATA[前言承接上文，经过Magisk修补后的boot.img在启动引导过程中为了实现Root的功能很关键的一步在于patch了init.rc和se]]></description>
 </item></channel>
 </rss>
