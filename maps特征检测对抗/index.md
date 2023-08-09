@@ -146,13 +146,8 @@ struct mm_struct {
 #endif
 } __randomize_layout;
 ```
-关键的mmap属性是保存VMA的链表
-
-当我们执行cat /proc/self/maps时，底层函数的执行流程大致是
-1. 通过调用 libc 库中的 fopen() 函数打开 /proc/self/maps 文件，并返回一个文件指针
-2. 循环调用 libc 库中的 fgets() 函数来读取文件中的每一行数据，并将其输出到终端上
-
-而在fget内部会调用libc库中的read()系统调用来读取文件中的数据。当内核收到read()系统调用时，会根据文件描述符找到对应的文件对象，并调用文件对象的read()方法来读取数据。在/proc/self/maps文件的实现中，文件对象的read()方法会调用内核中的vfs_read()函数来读取数据。vfs_read会根据文件类型调用具体类型的read方法来读取数据，而/proc文件目录中，会调用proc_pid_maps_read来进行读取，而proc_pid_maps_read最终会调用show_map_vma来获取进程的内存映射数据
+关键的mmap属性是保存VMA的链表，整体流程大致是这样的
+![](https://github.com/tcc0lin/self_pic/blob/main/map%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg?raw=true)
 ```c
 static void
 // 入参为文件指针以及vma指针

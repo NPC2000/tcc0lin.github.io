@@ -35,7 +35,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/tcc0lin.github.io\/maps%E7%89%B9%E5%BE%81%E6%A3%80%E6%B5%8B%E5%AF%B9%E6%8A%97\/"
-        },"genre": "posts","keywords": "maps特征","wordcount":  2771 ,
+        },"genre": "posts","keywords": "maps特征","wordcount":  2409 ,
         "url": "https:\/\/tcc0lin.github.io\/maps%E7%89%B9%E5%BE%81%E6%A3%80%E6%B5%8B%E5%AF%B9%E6%8A%97\/","datePublished": "2023-08-06T14:39:32+08:00","dateModified": "2023-08-06T14:39:32+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -151,7 +151,7 @@
             <div class="post-meta-line">
                 <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="/" title="Author" rel=" author" class="author">tcc0lin</a>
                 </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E7%89%B9%E5%BE%81%E6%A3%80%E6%B5%8B%E5%AF%B9%E6%8A%97/"><i class="far fa-folder fa-fw"></i>特征检测对抗</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-08-06">2023-08-06</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-08-06">2023-08-06</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2771 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-08-06">2023-08-06</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-08-06">2023-08-06</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2409 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -487,13 +487,16 @@
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="p">}</span> <span class="n">__randomize_layout</span><span class="p">;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>关键的mmap属性是保存VMA的链表</p>
-<p>当我们执行cat /proc/self/maps时，底层函数的执行流程大致是</p>
-<ol>
-<li>通过调用 libc 库中的 fopen() 函数打开 /proc/self/maps 文件，并返回一个文件指针</li>
-<li>循环调用 libc 库中的 fgets() 函数来读取文件中的每一行数据，并将其输出到终端上</li>
-</ol>
-<p>而在fget内部会调用libc库中的read()系统调用来读取文件中的数据。当内核收到read()系统调用时，会根据文件描述符找到对应的文件对象，并调用文件对象的read()方法来读取数据。在/proc/self/maps文件的实现中，文件对象的read()方法会调用内核中的vfs_read()函数来读取数据。vfs_read会根据文件类型调用具体类型的read方法来读取数据，而/proc文件目录中，会调用proc_pid_maps_read来进行读取，而proc_pid_maps_read最终会调用show_map_vma来获取进程的内存映射数据</p>
+</div><p>关键的mmap属性是保存VMA的链表，整体流程大致是这样的
+<figure><a class="lightgallery" href="https://github.com/tcc0lin/self_pic/blob/main/map%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg?raw=true" title="https://github.com/tcc0lin/self_pic/blob/main/map%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg?raw=true" data-thumbnail="https://github.com/tcc0lin/self_pic/blob/main/map%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg?raw=true">
+        <img
+            
+            loading="lazy"
+            src="https://github.com/tcc0lin/self_pic/blob/main/map%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg?raw=true"
+            srcset="https://github.com/tcc0lin/self_pic/blob/main/map%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg?raw=true, https://github.com/tcc0lin/self_pic/blob/main/map%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg?raw=true 1.5x, https://github.com/tcc0lin/self_pic/blob/main/map%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg?raw=true 2x"
+            sizes="auto"
+            alt="https://github.com/tcc0lin/self_pic/blob/main/map%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg?raw=true">
+    </a></figure></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
