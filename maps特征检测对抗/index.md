@@ -244,6 +244,145 @@ static void show_vma_header_prefix(struct seq_file *m,
 ### 三、maps特征
 上面大概了解了maps的形成以及展示过程后，结合hook框架中常暴露的特征来说下
 #### 1 lsposed maps特征
-#### 2 frida maps特征
-### 四、对抗思路
+目前手头上的项目是基于lsposed 1.6.0魔改的，因此以1.6.0的代码为例
+```c
+// core/src/main/cpp/main/src/context.cpp
 
+void
+Context::OnNativeForkSystemServerPost(JNIEnv *env, jint res) {
+	if (res != 0) return;
+	if (!skip_) {
+		LoadDex(env);
+		Service::instance()->HookBridge(*this, env);
+		auto binder = Service::instance()->RequestBinderForSystemServer(env);
+		if (binder) {
+			InstallInlineHooks();
+			Init(env);
+			FindAndCall(env, "forkSystemServerPost", "(Landroid/os/IBinder;)V", binder);
+		} else skip_ = true;
+	}
+	setAllowUnload(skip_);
+}
+
+void
+Context::OnNativeForkAndSpecializePost(JNIEnv *env) {
+	const JUTFString process_name(env, nice_name_);
+	auto binder = skip_ ? ScopedLocalRef<jobject>{env, nullptr}
+						: Service::instance()->RequestBinder(env, nice_name_);
+	if (binder) {
+		InstallInlineHooks();
+		LoadDex(env);
+		Init(env);
+		LOGD("Done prepare");
+		FindAndCall(env, "forkAndSpecializePost",
+					"(Ljava/lang/String;Ljava/lang/String;Landroid/os/IBinder;)V",
+					app_data_dir_, nice_name_,
+					binder);
+		LOGD("injected xposed into %s", process_name.get());
+		setAllowUnload(false);
+	} else {
+		auto context = Context::ReleaseInstance();
+		auto service = Service::ReleaseInstance();
+		art_img.reset();
+		LOGD("skipped %s", process_name.get());
+		setAllowUnload(true);
+	}
+}
+```
+在ForkSystemServerPost和ForkAndSpecializePost函数时会触发inlinehook的操作
+```c
+void InstallInlineHooks() {
+	if (installed.exchange(true)) [[unlikely]] {
+		LOGD("Inline hooks have been installed, skip");
+		return;
+	}
+	LOGD("Start to install inline hooks");
+	const auto &handle_libart = *art_img;
+	if (!handle_libart.isValid()) {
+		LOGE("Failed to fetch libart.so");
+	}
+	art::Runtime::Setup(handle_libart);
+	art::hidden_api::DisableHiddenApi(handle_libart);
+	art::art_method::Setup(handle_libart);
+	art::Thread::Setup(handle_libart);
+	art::ClassLinker::Setup(handle_libart);
+	art::mirror::Class::Setup(handle_libart);
+	art::JNIEnvExt::Setup(handle_libart);
+	art::instrumentation::DisableUpdateHookedMethodsCode(handle_libart);
+	art::thread_list::ScopedSuspendAll::Setup(handle_libart);
+	art::gc::ScopedGCCriticalSection::Setup(handle_libart);
+	art::jit::jit_code_cache::Setup(handle_libart);
+	art_img.reset();
+	LOGD("Inline hooks installed");
+}
+```
+主要是对libart.so的修改，以art::instrumentation::DisableUpdateHookedMethodsCode(handle_libart);为例
+```c
+// core/src/main/cpp/main/include/art/runtime/instrumentation.h
+
+namespace art {
+	namespace instrumentation {
+
+		CREATE_MEM_HOOK_STUB_ENTRIES(
+				"_ZN3art15instrumentation15Instrumentation21UpdateMethodsCodeImplEPNS_9ArtMethodEPKv",
+				void, UpdateMethodsCode, (void * thiz, void * art_method, const void *quick_code), {
+					if (lspd::isHooked(art_method)) [[unlikely]] {
+						LOGD("Skip update method code for hooked method %s",
+								art_method::PrettyMethod(art_method).c_str());
+						return;
+					} else {
+						backup(thiz, art_method, quick_code);
+					}
+				});
+
+		inline void DisableUpdateHookedMethodsCode(const SandHook::ElfImg &handle) {
+			lspd::HookSym(handle, UpdateMethodsCode);
+		}
+	}
+}
+
+// core/src/main/cpp/main/include/base/object.h
+inline static bool HookSym(H &&handle, T &arg) {
+	auto original = Dlsym(std::forward<H>(handle), arg.sym);
+	return HookSymNoHandle(original, arg);
+}
+
+inline static bool HookSymNoHandle(void *original, T &arg) {
+	if (original) {
+		if constexpr(is_instance<decltype(arg.backup), MemberFunction>::value) {
+			void *backup;
+			HookFunction(original, reinterpret_cast<void *>(arg.replace), &backup);
+			arg.backup = reinterpret_cast<typename decltype(arg.backup)::FunType>(backup);
+		} else {
+			HookFunction(original, reinterpret_cast<void *>(arg.replace),
+							reinterpret_cast<void **>(&arg.backup));
+		}
+		return true;
+	} else {
+		return false;
+	}
+}
+
+inline int HookFunction(void *original, void *replace, void **backup) {
+	_make_rwx(original, _page_size);
+	if constexpr (isDebug) {
+		Dl_info info;
+		if (dladdr(original, &info))
+			LOGD("Hooking %s (%p) from %s (%p)",
+					info.dli_sname ? info.dli_sname : "(unknown symbol)", info.dli_saddr,
+					info.dli_fname ? info.dli_fname : "(unknown file)", info.dli_fbase);
+	}
+	return DobbyHook(original, replace, backup);
+}
+```
+这个版本的lsposed所使用到的inlinehook还是基于dobby hook来做的，而dobby hook是很典型的inline hook套路，基于指令的跳转，因此对于libart.so会增加额外的代码段与数据段
+#### 2 frida maps特征
+来源于[[原创]关于frida检测的一个新思路
+](https://bbs.kanxue.com/thread-268586-1.htm)
+### 四、对抗思路
+- 复用riru_hide
+	具体流程可参考之前的文章-[Riru原理理解](https://tcc0lin.github.io/riru%E5%8E%9F%E7%90%86%E7%90%86%E8%A7%A3/#21-hidepreparemapshidelibrary)，原理是将对应每个segment对应内存的数据替换，并去除文件关联
+- open重定向
+	例如内核层修改函数do_sys_open，返回指定伪装文件的fd来做展示，需要注意的是maps内容是随时变动的，那么伪装文件的生成也需要每次动态生成
+- 内核层修改展示函数show_map_vma
+	代码可参考[task_mmu.c](https://github.com/tcc0lin/KernelModification/blob/main/task_mmu.c)，修改展示内容

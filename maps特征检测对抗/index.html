@@ -35,7 +35,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/tcc0lin.github.io\/maps%E7%89%B9%E5%BE%81%E6%A3%80%E6%B5%8B%E5%AF%B9%E6%8A%97\/"
-        },"genre": "posts","keywords": "maps特征","wordcount":  2409 ,
+        },"genre": "posts","keywords": "maps特征","wordcount":  3346 ,
         "url": "https:\/\/tcc0lin.github.io\/maps%E7%89%B9%E5%BE%81%E6%A3%80%E6%B5%8B%E5%AF%B9%E6%8A%97\/","datePublished": "2023-08-06T14:39:32+08:00","dateModified": "2023-08-06T14:39:32+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -151,7 +151,7 @@
             <div class="post-meta-line">
                 <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="/" title="Author" rel=" author" class="author">tcc0lin</a>
                 </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E7%89%B9%E5%BE%81%E6%A3%80%E6%B5%8B%E5%AF%B9%E6%8A%97/"><i class="far fa-folder fa-fw"></i>特征检测对抗</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-08-06">2023-08-06</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-08-06">2023-08-06</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2409 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-08-06">2023-08-06</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-08-06">2023-08-06</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3346 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 7 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -688,9 +688,285 @@
 </div><h3 id="三maps特征" class="headerLink">
     <a href="#%e4%b8%89maps%e7%89%b9%e5%be%81" class="header-mark"></a>三、maps特征</h3><p>上面大概了解了maps的形成以及展示过程后，结合hook框架中常暴露的特征来说下</p>
 <h4 id="1-lsposed-maps特征" class="headerLink">
-    <a href="#1-lsposed-maps%e7%89%b9%e5%be%81" class="header-mark"></a>1 lsposed maps特征</h4><h4 id="2-frida-maps特征" class="headerLink">
-    <a href="#2-frida-maps%e7%89%b9%e5%be%81" class="header-mark"></a>2 frida maps特征</h4><h3 id="四对抗思路" class="headerLink">
-    <a href="#%e5%9b%9b%e5%af%b9%e6%8a%97%e6%80%9d%e8%b7%af" class="header-mark"></a>四、对抗思路</h3></div>
+    <a href="#1-lsposed-maps%e7%89%b9%e5%be%81" class="header-mark"></a>1 lsposed maps特征</h4><p>目前手头上的项目是基于lsposed 1.6.0魔改的，因此以1.6.0的代码为例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// core/src/main/cpp/main/src/context.cpp
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="n">Context</span><span class="o">::</span><span class="nf">OnNativeForkSystemServerPost</span><span class="p">(</span><span class="n">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="p">,</span> <span class="n">jint</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">res</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">skip_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">LoadDex</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Service</span><span class="o">::</span><span class="nf">instance</span><span class="p">()</span><span class="o">-&gt;</span><span class="nf">HookBridge</span><span class="p">(</span><span class="o">*</span><span class="n">this</span><span class="p">,</span> <span class="n">env</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">auto</span> <span class="n">binder</span> <span class="o">=</span> <span class="n">Service</span><span class="o">::</span><span class="nf">instance</span><span class="p">()</span><span class="o">-&gt;</span><span class="nf">RequestBinderForSystemServer</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">binder</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">InstallInlineHooks</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">Init</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">FindAndCall</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s">&#34;forkSystemServerPost&#34;</span><span class="p">,</span> <span class="s">&#34;(Landroid/os/IBinder;)V&#34;</span><span class="p">,</span> <span class="n">binder</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="n">skip_</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">setAllowUnload</span><span class="p">(</span><span class="n">skip_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="n">Context</span><span class="o">::</span><span class="nf">OnNativeForkAndSpecializePost</span><span class="p">(</span><span class="n">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">const</span> <span class="n">JUTFString</span> <span class="nf">process_name</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">nice_name_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">auto</span> <span class="n">binder</span> <span class="o">=</span> <span class="n">skip_</span> <span class="o">?</span> <span class="n">ScopedLocalRef</span><span class="o">&lt;</span><span class="n">jobject</span><span class="o">&gt;</span><span class="p">{</span><span class="n">env</span><span class="p">,</span> <span class="n">nullptr</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">						<span class="o">:</span> <span class="n">Service</span><span class="o">::</span><span class="nf">instance</span><span class="p">()</span><span class="o">-&gt;</span><span class="nf">RequestBinder</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">nice_name_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">binder</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">InstallInlineHooks</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">LoadDex</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">Init</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">LOGD</span><span class="p">(</span><span class="s">&#34;Done prepare&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">FindAndCall</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s">&#34;forkAndSpecializePost&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">					<span class="s">&#34;(Ljava/lang/String;Ljava/lang/String;Landroid/os/IBinder;)V&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">					<span class="n">app_data_dir_</span><span class="p">,</span> <span class="n">nice_name_</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">					<span class="n">binder</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">LOGD</span><span class="p">(</span><span class="s">&#34;injected xposed into %s&#34;</span><span class="p">,</span> <span class="n">process_name</span><span class="p">.</span><span class="nf">get</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">setAllowUnload</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">auto</span> <span class="n">context</span> <span class="o">=</span> <span class="n">Context</span><span class="o">::</span><span class="nf">ReleaseInstance</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="k">auto</span> <span class="n">service</span> <span class="o">=</span> <span class="n">Service</span><span class="o">::</span><span class="nf">ReleaseInstance</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="n">art_img</span><span class="p">.</span><span class="nf">reset</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">LOGD</span><span class="p">(</span><span class="s">&#34;skipped %s&#34;</span><span class="p">,</span> <span class="n">process_name</span><span class="p">.</span><span class="nf">get</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">setAllowUnload</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在ForkSystemServerPost和ForkAndSpecializePost函数时会触发inlinehook的操作</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InstallInlineHooks</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">installed</span><span class="p">.</span><span class="nf">exchange</span><span class="p">(</span><span class="nb">true</span><span class="p">))</span> <span class="p">[[</span><span class="n">unlikely</span><span class="p">]]</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">LOGD</span><span class="p">(</span><span class="s">&#34;Inline hooks have been installed, skip&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">LOGD</span><span class="p">(</span><span class="s">&#34;Start to install inline hooks&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="n">handle_libart</span> <span class="o">=</span> <span class="o">*</span><span class="n">art_img</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">handle_libart</span><span class="p">.</span><span class="nf">isValid</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">LOGE</span><span class="p">(</span><span class="s">&#34;Failed to fetch libart.so&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art</span><span class="o">::</span><span class="n">Runtime</span><span class="o">::</span><span class="nf">Setup</span><span class="p">(</span><span class="n">handle_libart</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art</span><span class="o">::</span><span class="n">hidden_api</span><span class="o">::</span><span class="nf">DisableHiddenApi</span><span class="p">(</span><span class="n">handle_libart</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art</span><span class="o">::</span><span class="n">art_method</span><span class="o">::</span><span class="nf">Setup</span><span class="p">(</span><span class="n">handle_libart</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art</span><span class="o">::</span><span class="n">Thread</span><span class="o">::</span><span class="nf">Setup</span><span class="p">(</span><span class="n">handle_libart</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art</span><span class="o">::</span><span class="n">ClassLinker</span><span class="o">::</span><span class="nf">Setup</span><span class="p">(</span><span class="n">handle_libart</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art</span><span class="o">::</span><span class="n">mirror</span><span class="o">::</span><span class="n">Class</span><span class="o">::</span><span class="nf">Setup</span><span class="p">(</span><span class="n">handle_libart</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art</span><span class="o">::</span><span class="n">JNIEnvExt</span><span class="o">::</span><span class="nf">Setup</span><span class="p">(</span><span class="n">handle_libart</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art</span><span class="o">::</span><span class="n">instrumentation</span><span class="o">::</span><span class="nf">DisableUpdateHookedMethodsCode</span><span class="p">(</span><span class="n">handle_libart</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art</span><span class="o">::</span><span class="n">thread_list</span><span class="o">::</span><span class="n">ScopedSuspendAll</span><span class="o">::</span><span class="nf">Setup</span><span class="p">(</span><span class="n">handle_libart</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art</span><span class="o">::</span><span class="n">gc</span><span class="o">::</span><span class="n">ScopedGCCriticalSection</span><span class="o">::</span><span class="nf">Setup</span><span class="p">(</span><span class="n">handle_libart</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art</span><span class="o">::</span><span class="n">jit</span><span class="o">::</span><span class="n">jit_code_cache</span><span class="o">::</span><span class="nf">Setup</span><span class="p">(</span><span class="n">handle_libart</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">art_img</span><span class="p">.</span><span class="nf">reset</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">LOGD</span><span class="p">(</span><span class="s">&#34;Inline hooks installed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>主要是对libart.so的修改，以art::instrumentation::DisableUpdateHookedMethodsCode(handle_libart);为例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// core/src/main/cpp/main/include/art/runtime/instrumentation.h
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">namespace</span> <span class="n">art</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">namespace</span> <span class="n">instrumentation</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="nf">CREATE_MEM_HOOK_STUB_ENTRIES</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">				<span class="s">&#34;_ZN3art15instrumentation15Instrumentation21UpdateMethodsCodeImplEPNS_9ArtMethodEPKv&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">				<span class="kt">void</span><span class="p">,</span> <span class="n">UpdateMethodsCode</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span> <span class="n">thiz</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span> <span class="n">art_method</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">quick_code</span><span class="p">),</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">					<span class="k">if</span> <span class="p">(</span><span class="n">lspd</span><span class="o">::</span><span class="nf">isHooked</span><span class="p">(</span><span class="n">art_method</span><span class="p">))</span> <span class="p">[[</span><span class="n">unlikely</span><span class="p">]]</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">						<span class="nf">LOGD</span><span class="p">(</span><span class="s">&#34;Skip update method code for hooked method %s&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">								<span class="n">art_method</span><span class="o">::</span><span class="nf">PrettyMethod</span><span class="p">(</span><span class="n">art_method</span><span class="p">).</span><span class="nf">c_str</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">						<span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">					<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">						<span class="nf">backup</span><span class="p">(</span><span class="n">thiz</span><span class="p">,</span> <span class="n">art_method</span><span class="p">,</span> <span class="n">quick_code</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">					<span class="p">}</span>
+</span></span><span class="line"><span class="cl">				<span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="kr">inline</span> <span class="kt">void</span> <span class="nf">DisableUpdateHookedMethodsCode</span><span class="p">(</span><span class="k">const</span> <span class="n">SandHook</span><span class="o">::</span><span class="n">ElfImg</span> <span class="o">&amp;</span><span class="n">handle</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">lspd</span><span class="o">::</span><span class="nf">HookSym</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">UpdateMethodsCode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// core/src/main/cpp/main/include/base/object.h
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">inline</span> <span class="k">static</span> <span class="kt">bool</span> <span class="nf">HookSym</span><span class="p">(</span><span class="n">H</span> <span class="o">&amp;&amp;</span><span class="n">handle</span><span class="p">,</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">auto</span> <span class="n">original</span> <span class="o">=</span> <span class="nf">Dlsym</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">H</span><span class="o">&gt;</span><span class="p">(</span><span class="n">handle</span><span class="p">),</span> <span class="n">arg</span><span class="p">.</span><span class="n">sym</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nf">HookSymNoHandle</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">arg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="k">static</span> <span class="kt">bool</span> <span class="nf">HookSymNoHandle</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">original</span><span class="p">,</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">original</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nf">constexpr</span><span class="p">(</span><span class="n">is_instance</span><span class="o">&lt;</span><span class="nf">decltype</span><span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="n">backup</span><span class="p">),</span> <span class="n">MemberFunction</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="kt">void</span> <span class="o">*</span><span class="n">backup</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">HookFunction</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="n">replace</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">backup</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">arg</span><span class="p">.</span><span class="n">backup</span> <span class="o">=</span> <span class="n">reinterpret_cast</span><span class="o">&lt;</span><span class="kr">typename</span> <span class="nf">decltype</span><span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="n">backup</span><span class="p">)</span><span class="o">::</span><span class="n">FunType</span><span class="o">&gt;</span><span class="p">(</span><span class="n">backup</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">HookFunction</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="n">replace</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">							<span class="n">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span> <span class="o">**&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">arg</span><span class="p">.</span><span class="n">backup</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="kt">int</span> <span class="nf">HookFunction</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">original</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">replace</span><span class="p">,</span> <span class="kt">void</span> <span class="o">**</span><span class="n">backup</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">_make_rwx</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">_page_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nf">constexpr</span> <span class="p">(</span><span class="n">isDebug</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Dl_info</span> <span class="n">info</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="nf">dladdr</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">LOGD</span><span class="p">(</span><span class="s">&#34;Hooking %s (%p) from %s (%p)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">					<span class="n">info</span><span class="p">.</span><span class="n">dli_sname</span> <span class="o">?</span> <span class="n">info</span><span class="p">.</span><span class="nl">dli_sname</span> <span class="p">:</span> <span class="s">&#34;(unknown symbol)&#34;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">dli_saddr</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">					<span class="n">info</span><span class="p">.</span><span class="n">dli_fname</span> <span class="o">?</span> <span class="n">info</span><span class="p">.</span><span class="nl">dli_fname</span> <span class="p">:</span> <span class="s">&#34;(unknown file)&#34;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">dli_fbase</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nf">DobbyHook</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">replace</span><span class="p">,</span> <span class="n">backup</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个版本的lsposed所使用到的inlinehook还是基于dobby hook来做的，而dobby hook是很典型的inline hook套路，基于指令的跳转，因此对于libart.so会增加额外的代码段与数据段</p>
+<h4 id="2-frida-maps特征" class="headerLink">
+    <a href="#2-frida-maps%e7%89%b9%e5%be%81" class="header-mark"></a>2 frida maps特征</h4><p>来源于<a href="https://bbs.kanxue.com/thread-268586-1.htm" target="_blank" rel="noopener noreferrer">[原创]关于frida检测的一个新思路
+</a></p>
+<h3 id="四对抗思路" class="headerLink">
+    <a href="#%e5%9b%9b%e5%af%b9%e6%8a%97%e6%80%9d%e8%b7%af" class="header-mark"></a>四、对抗思路</h3><ul>
+<li>复用riru_hide
+具体流程可参考之前的文章-<a href="https://tcc0lin.github.io/riru%E5%8E%9F%E7%90%86%E7%90%86%E8%A7%A3/#21-hidepreparemapshidelibrary" target="_blank" rel="noopener noreferrer">Riru原理理解</a>，原理是将对应每个segment对应内存的数据替换，并去除文件关联</li>
+<li>open重定向
+例如内核层修改函数do_sys_open，返回指定伪装文件的fd来做展示，需要注意的是maps内容是随时变动的，那么伪装文件的生成也需要每次动态生成</li>
+<li>内核层修改展示函数show_map_vma
+代码可参考<a href="https://github.com/tcc0lin/KernelModification/blob/main/task_mmu.c" target="_blank" rel="noopener noreferrer">task_mmu.c</a>，修改展示内容</li>
+</ul>
+</div>
 
         
 
