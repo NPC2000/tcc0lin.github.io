@@ -162,8 +162,7 @@ void jni::RestoreHooks(JNIEnv *env) {
 
 }
 ```
-fakemap_file的作用相当于是去除文件关联，实现上感觉不如riru hide so_list来得好
+fakemap_file的作用相当于是去除maps中特征段的文件关联，和riru hide so_list的方式类似
 
 ### 二、新方式的思考
-- 这种新方式带来的好处？
-- 新方式有哪些特征点
+相比于老方式来说，新方案没有更改系统属性，而是借助于Magisk修改libandroid_runtime.so。来在HuskyDG的电报群内和一些开发者讨论过，都一致认为这种新方式所暴露出来的风险是大于老方案的，确实如HuskyDG所说，这种新方式只是一种探索吧
