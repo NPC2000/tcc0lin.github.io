@@ -35,7 +35,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/tcc0lin.github.io\/frida%E7%89%B9%E5%BE%81%E5%AF%B9%E6%8A%97%E6%A1%88%E4%BE%8B1\/"
-        },"genre": "posts","keywords": "frida特征对抗","wordcount":  5461 ,
+        },"genre": "posts","keywords": "frida特征对抗","wordcount":  5657 ,
         "url": "https:\/\/tcc0lin.github.io\/frida%E7%89%B9%E5%BE%81%E5%AF%B9%E6%8A%97%E6%A1%88%E4%BE%8B1\/","datePublished": "2023-08-18T22:43:19+08:00","dateModified": "2023-08-18T22:43:19+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -157,9 +157,10 @@
                 </li>
               </ul>
             </li>
-            <li><a href="#2-对抗方式">2 对抗方式</a>
+            <li><a href="#2-字符解密">2 字符解密</a></li>
+            <li><a href="#3-对抗方式">3 对抗方式</a>
               <ul>
-                <li><a href="#21-调用点指令nop">2.1 调用点指令nop</a></li>
+                <li><a href="#31-调用点指令nop">3.1 调用点指令nop</a></li>
               </ul>
             </li>
           </ul>
@@ -173,7 +174,7 @@
             <div class="post-meta-line">
                 <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="/" title="Author" rel=" author" class="author">tcc0lin</a>
                 </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E5%AF%B9%E6%8A%97%E6%A1%88%E4%BE%8B/"><i class="far fa-folder fa-fw"></i>对抗案例</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-08-18">2023-08-18</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-08-18">2023-08-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 5461 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 11 分钟&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-08-18">2023-08-18</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-08-18">2023-08-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 5657 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 12 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -206,9 +207,10 @@
                 </li>
               </ul>
             </li>
-            <li><a href="#2-对抗方式">2 对抗方式</a>
+            <li><a href="#2-字符解密">2 字符解密</a></li>
+            <li><a href="#3-对抗方式">3 对抗方式</a>
               <ul>
-                <li><a href="#21-调用点指令nop">2.1 调用点指令nop</a></li>
+                <li><a href="#31-调用点指令nop">3.1 调用点指令nop</a></li>
               </ul>
             </li>
           </ul>
@@ -2270,9 +2272,114 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h4 id="2-对抗方式" class="headerLink">
-    <a href="#2-%e5%af%b9%e6%8a%97%e6%96%b9%e5%bc%8f" class="header-mark"></a>2 对抗方式</h4><h5 id="21-调用点指令nop" class="headerLink">
-    <a href="#21-%e8%b0%83%e7%94%a8%e7%82%b9%e6%8c%87%e4%bb%a4nop" class="header-mark"></a>2.1 调用点指令nop</h5><div class="highlight"><div class="chroma">
+</div><h4 id="2-字符解密" class="headerLink">
+    <a href="#2-%e5%ad%97%e7%ac%a6%e8%a7%a3%e5%af%86" class="header-mark"></a>2 字符解密</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;iomanip&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;ostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">size_t</span> <span class="n">v0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="c1">// 设置字节数 1或者4 当数据元素为4个字节时设1，为1个字节时设4
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">// int type = 4;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">// unsigned int v21[18] = {
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//    0xFF,          
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//    0xD5,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//    0xC0,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//    0xFD,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//    0xC6,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//    0x84,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//    0xF8,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//    0xC0,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//    0xCC,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//    0xF7,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//    0xD3,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//       0,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//       0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">// };
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="kt">int</span> <span class="n">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">v21</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x78096707</span><span class="p">,</span>          
+</span></span><span class="line"><span class="cl">      <span class="mh">0x4206D9B3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x46A799A9</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x7809D795</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x46B656B9</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x480799A9</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x7809A799</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x4639A9A7</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0xA9A799A9</span>
+</span></span><span class="line"><span class="cl">   <span class="p">};</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*</span> <span class="n">decode</span> <span class="o">=</span> <span class="n">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">v21</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="n">v0</span> <span class="o">=</span> <span class="nf">strlen</span><span class="p">((</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">decode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">v0</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">temp</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x99</span><span class="p">,</span><span class="mh">0xA7</span><span class="p">,</span><span class="mh">0xA9</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">   <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">80</span><span class="p">;</span><span class="n">i</span><span class="o">+=</span><span class="n">type</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">      <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">j</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">short</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">decode</span> <span class="o">+</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">k</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="mi">3</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)(</span><span class="n">j</span><span class="o">^</span><span class="n">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="3-对抗方式" class="headerLink">
+    <a href="#3-%e5%af%b9%e6%8a%97%e6%96%b9%e5%bc%8f" class="header-mark"></a>3 对抗方式</h4><h5 id="31-调用点指令nop" class="headerLink">
+    <a href="#31-%e8%b0%83%e7%94%a8%e7%82%b9%e6%8c%87%e4%bb%a4nop" class="header-mark"></a>3.1 调用点指令nop</h5><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
