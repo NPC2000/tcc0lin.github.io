@@ -3,9 +3,16 @@
         <title>tcc0lin&#39;s blog</title>
         <link>https://tcc0lin.github.io/</link>
         <description>tcc0lin&#39;s blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Fri, 18 Aug 2023 09:07:13 &#43;0800</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Fri, 18 Aug 2023 22:43:19 &#43;0800</lastBuildDate>
             <atom:link href="https://tcc0lin.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Frida特征对抗案例1</title>
+    <link>https://tcc0lin.github.io/frida%E7%89%B9%E5%BE%81%E5%AF%B9%E6%8A%97%E6%A1%88%E4%BE%8B1/</link>
+    <pubDate>Fri, 18 Aug 2023 22:43:19 &#43;0800</pubDate><author>
+        <name>tcc0lin</name>
+    </author><guid>https://tcc0lin.github.io/frida%E7%89%B9%E5%BE%81%E5%AF%B9%E6%8A%97%E6%A1%88%E4%BE%8B1/</guid>
+    <description><![CDATA[一、资源准备 tv.danmaku.bili 7.43.0 pixel2 android10.0 frida 14.2.2 二、分析思路使用frida以spawn模式启动，可以发现进程直接崩溃，说明存在反调试 1 2 3 Spawned `tv.danmaku.bili`. Resuming main thread! [Pixel 2::tv.danmaku.bili]-&gt; Process terminated [Pixel 2::tv.danmaku.bili]-&gt; 通常]]></description>
+</item><item>
     <title>探讨新的riru加载方式</title>
     <link>https://tcc0lin.github.io/%E6%8E%A2%E8%AE%A8%E6%96%B0%E7%9A%84riru%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F/</link>
     <pubDate>Fri, 18 Aug 2023 09:07:13 &#43;0800</pubDate><author>
@@ -68,12 +75,5 @@
         <name>tcc0lin</name>
     </author><guid>https://tcc0lin.github.io/%E9%87%8D%E8%AF%BBmagisk%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%824/</guid>
     <description><![CDATA[前言Magisk内部实现细节的第四篇，在前两篇着重讲了Magisk的三个重要功能的两个&mdash;su以及hide，这篇就来分析下最后一个]]></description>
-</item><item>
-    <title>重读Magisk内部实现细节3</title>
-    <link>https://tcc0lin.github.io/%E9%87%8D%E8%AF%BBmagisk%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%823/</link>
-    <pubDate>Sun, 18 Jun 2023 13:33:34 &#43;0800</pubDate><author>
-        <name>tcc0lin</name>
-    </author><guid>https://tcc0lin.github.io/%E9%87%8D%E8%AF%BBmagisk%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%823/</guid>
-    <description><![CDATA[前言Magisk内部实现细节的第三篇，主要通过源码来了解下Magisk Hide的原理，这部分代码在native/jni/magiskhide]]></description>
 </item></channel>
 </rss>
