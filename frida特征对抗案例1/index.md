@@ -1153,3 +1153,4 @@ setImmediate(hook_dlopen, "libmsaoaidsec.so")
 
 通常都是通过strstr来做判断，但是某些情况，例如验证inlinehook指令时无法直接定位，杀死进程通常都是使用exit或是通过svc exit_group来操作
 
+完整代码看这里[libmsaoaidsec.js](https://github.com/tcc0lin/SecCase/blob/main/libmsaoaidsec.js)
