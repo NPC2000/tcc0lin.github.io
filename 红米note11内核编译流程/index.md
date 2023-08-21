@@ -211,5 +211,9 @@ dts  Image  Image.gz  Image.gz-dtb
 内核文件是Image.gz-dtb，这个是将kenrl和dtb打包在一起
 另外还需要的文件是dts目录下的mt6768.dtb，因为kernel启动时需要配套的dtb文件
 #### 3 内核替换
+替换kernel和dtb文件
 #### 4 boot.img重打包
+```shell
+./gradlew pack
+```
 

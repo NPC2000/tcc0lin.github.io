@@ -35,7 +35,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/tcc0lin.github.io\/%E7%BA%A2%E7%B1%B3note11%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B\/"
-        },"genre": "posts","keywords": "内核编译","wordcount":  2845 ,
+        },"genre": "posts","keywords": "内核编译","wordcount":  2862 ,
         "url": "https:\/\/tcc0lin.github.io\/%E7%BA%A2%E7%B1%B3note11%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B\/","datePublished": "2023-06-30T23:50:17+08:00","dateModified": "2023-06-30T23:50:17+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -164,7 +164,7 @@
             <div class="post-meta-line">
                 <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="/" title="Author" rel=" author" class="author">tcc0lin</a>
                 </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E7%B3%BB%E7%BB%9F%E5%AE%9A%E5%88%B6/"><i class="far fa-folder fa-fw"></i>系统定制</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-06-30">2023-06-30</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-06-30">2023-06-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2845 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-06-30">2023-06-30</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-06-30">2023-06-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2862 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -599,8 +599,17 @@
 </div><p>内核文件是Image.gz-dtb，这个是将kenrl和dtb打包在一起
 另外还需要的文件是dts目录下的mt6768.dtb，因为kernel启动时需要配套的dtb文件</p>
 <h4 id="3-内核替换" class="headerLink">
-    <a href="#3-%e5%86%85%e6%a0%b8%e6%9b%bf%e6%8d%a2" class="header-mark"></a>3 内核替换</h4><h4 id="4-bootimg重打包" class="headerLink">
-    <a href="#4-bootimg%e9%87%8d%e6%89%93%e5%8c%85" class="header-mark"></a>4 boot.img重打包</h4></div>
+    <a href="#3-%e5%86%85%e6%a0%b8%e6%9b%bf%e6%8d%a2" class="header-mark"></a>3 内核替换</h4><p>替换kernel和dtb文件</p>
+<h4 id="4-bootimg重打包" class="headerLink">
+    <a href="#4-bootimg%e9%87%8d%e6%89%93%e5%8c%85" class="header-mark"></a>4 boot.img重打包</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">./gradlew pack
+</span></span></code></pre></td></tr></table>
+</div>
+</div></div>
 
         
 
