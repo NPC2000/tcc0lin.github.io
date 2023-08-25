@@ -18,7 +18,10 @@
     ```shell
     git clone -b 14.2.18 --recurse-submodules https://github.com/frida/frida
     ```
-    选择tag为14.2.18，不必全量clone再切换，后续的版本和当前版本差别较大，会造成无法正常编译
+    选择tag为14.2.18，不必全量clone再切换，后续的版本和当前版本差别较大，会造成无法正常编译，原因是因为直接使用checkout的话只是针对frida这个仓库，但是对于submodule来说版本依旧未变，需要执行如下命令
+    ```shell
+    git submodule update --recursive
+    ```
 - toolchain/sdk
     可以选择自己编译，但是为了减少不必要的麻烦，直接选择官方已经打好的编译产物，frida官方是存在toolchain/sdk的编译后的产物，可以直接下，下载链接的格式参考
     ```shell
@@ -107,4 +110,9 @@ make[1]: Leaving directory '/home/linhanqiu/proj/frida'
 ```
 由于选择的架构是arm64，对应的输出目录是build/tmp-android-arm64
 ### 三、产物测试
-
+在官方版本列表上看frida-server14.2.18对应的python工具库版本
+```shell
+pip install frida==14.2.18
+pip install frida-tools==9.2.4
+```
+测试具体案例
