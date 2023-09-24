@@ -3,9 +3,16 @@
         <title>tcc0lin&#39;s blog</title>
         <link>https://tcc0lin.github.io/</link>
         <description>tcc0lin&#39;s blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 31 Aug 2023 18:29:34 &#43;0800</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 24 Sep 2023 19:21:12 &#43;0800</lastBuildDate>
             <atom:link href="https://tcc0lin.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Android11AOSP编译流程</title>
+    <link>https://tcc0lin.github.io/android11aosp%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/</link>
+    <pubDate>Sun, 24 Sep 2023 19:21:12 &#43;0800</pubDate><author>
+        <name>tcc0lin</name>
+    </author><guid>https://tcc0lin.github.io/android11aosp%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/</guid>
+    <description><![CDATA[前言 一、编译环境搭建 1 物料准备 设备：pixel2（walleye） 源码：aosp源码 build id：RP1A.200720.009 tag：andro]]></description>
+</item><item>
     <title>Unidbg特征检测汇总</title>
     <link>https://tcc0lin.github.io/unidbg%E7%89%B9%E5%BE%81%E6%A3%80%E6%B5%8B%E6%B1%87%E6%80%BB/</link>
     <pubDate>Thu, 31 Aug 2023 18:29:34 &#43;0800</pubDate><author>
@@ -68,12 +75,5 @@
         <name>tcc0lin</name>
     </author><guid>https://tcc0lin.github.io/super%E5%88%86%E5%8C%BA%E5%AE%9A%E5%88%B6/</guid>
     <description><![CDATA[一、编译环境搭建 1 物料准备 设备：红米note11（MIUI12 Android11） 原生super.img镜像文件，参考下载网站 2 工具准备 编译]]></description>
-</item><item>
-    <title>Riru原理理解</title>
-    <link>https://tcc0lin.github.io/riru%E5%8E%9F%E7%90%86%E7%90%86%E8%A7%A3/</link>
-    <pubDate>Tue, 25 Jul 2023 11:34:11 &#43;0800</pubDate><author>
-        <name>tcc0lin</name>
-    </author><guid>https://tcc0lin.github.io/riru%E5%8E%9F%E7%90%86%E7%90%86%E8%A7%A3/</guid>
-    <description><![CDATA[一、前言什么是riru？正如它Github上面所提到的那样，它提供的能力是允许模块能够将自己的代码注入到各个App进程或者是system_s]]></description>
 </item></channel>
 </rss>
