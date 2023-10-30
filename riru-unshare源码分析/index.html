@@ -174,7 +174,15 @@
     </li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><h3 id="一前言" class="headerLink">
+            </div><div class="content" id="content"><div class="details admonition note open">
+                <div class="details-summary admonition-title">
+                    <i class="icon fas fa-pencil-alt fa-fwnote"></i>注意<i class="details-icon fas fa-angle-right fa-fw"></i>
+                </div>
+                <div class="details-content">
+                    <div class="admonition-content">
+                        本文最后更新于 <span class="timeago" datetime="2023-07-04T23:54:48" title="July 4, 2023">2023-07-04</span>，文中内容可能已过时。</div>
+                </div>
+            </div><h3 id="一前言" class="headerLink">
     <a href="#%e4%b8%80%e5%89%8d%e8%a8%80" class="header-mark"></a>一、前言</h3><p>在之前的Magisk检测方式的文章中，提到过isolated process的概念，MagiskHide无法处理这种进程，因为它和zygote共同使用同一个namespace，如果对这类进程进行unmount的话，会导致所有app都无法正正常访问到su，对于这种情况，可以使用riru-unshare模块来处理使指定的独立进程不与zygote共享namespace</p>
 <h3 id="二源码分析" class="headerLink">
     <a href="#%e4%ba%8c%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90" class="header-mark"></a>二、源码分析</h3><p>riru-unshare是一个riru模块，看源码就从从main.cpp入手</p>

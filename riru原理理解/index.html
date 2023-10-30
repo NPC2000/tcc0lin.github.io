@@ -182,7 +182,15 @@
     </li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><h3 id="一前言" class="headerLink">
+            </div><div class="content" id="content"><div class="details admonition note open">
+                <div class="details-summary admonition-title">
+                    <i class="icon fas fa-pencil-alt fa-fwnote"></i>注意<i class="details-icon fas fa-angle-right fa-fw"></i>
+                </div>
+                <div class="details-content">
+                    <div class="admonition-content">
+                        本文最后更新于 <span class="timeago" datetime="2023-07-25T11:34:11" title="July 25, 2023">2023-07-25</span>，文中内容可能已过时。</div>
+                </div>
+            </div><h3 id="一前言" class="headerLink">
     <a href="#%e4%b8%80%e5%89%8d%e8%a8%80" class="header-mark"></a>一、前言</h3><p>什么是riru？正如它Github上面所提到的那样，它提供的能力是允许模块能够将自己的代码注入到各个App进程或者是system_server进程中，而这一切的实现就是基于它对于zygote进程的注入。</p>
 <p>那具体是怎么对于zygote进行注入的呢？<a href="https://github.com/RikkaApps/Riru" target="_blank" rel="noopener noreferrer">文档</a>中也提到，在早期的版本中，riru通过替换libmemtrack.so这个系统库的方式，原因是一方面zygote会加载该系统库，另一方面则是因为这个库足够小，仅仅只有十个函数，也就意味着替换掉它所造成的影响面是很小的，但是后续来看，由于使用到这个so的进程比较多，除了zygote还有SurfaceFlinger（用于显示系统）、mediaserver（用于媒体处理）等等，因此会造成一些意想不到的错误。</p>
 <p>因此在v22，riru使用了一个新的注入方式，设置native bridge，也就是指定ro.dalvik.vm.native.bridge的值为riri的so来实现注入，这个思路是来源于canyie的一篇文章<a href="https://blog.canyie.top/2020/08/18/nbinjection/" target="_blank" rel="noopener noreferrer">通过系统的native bridge实现注入zygote</a>，它的原理大概是</p>
